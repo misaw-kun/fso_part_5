@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { create } from '../services/blogs';
 
 const initialValues = {
   title: '',
@@ -7,28 +6,8 @@ const initialValues = {
   url: '',
 };
 
-const CreateBlog = ({ blogs, setBlogs, sendNotif, markError, currUser }) => {
+const CreateBlog = ({ addBlog }) => {
   const [values, setValues] = useState(initialValues);
-
-  async function handleCreate(e) {
-    e.preventDefault();
-    try {
-      const newBlog = await create(values);
-      setBlogs(() => blogs.concat(newBlog));
-      sendNotif(`a new blog by ${currUser.name} is added`);
-      setTimeout(() => {
-        sendNotif('');
-      }, 3000);
-      setValues(initialValues);
-    } catch (e) {
-      sendNotif(e.response.data.error);
-      markError(true);
-      setTimeout(() => {
-        sendNotif('');
-        markError(false);
-      }, 3000);
-    }
-  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -40,7 +19,7 @@ const CreateBlog = ({ blogs, setBlogs, sendNotif, markError, currUser }) => {
   };
 
   return (
-    <form onSubmit={handleCreate}>
+    <form onSubmit={(e) => addBlog(e, values, setValues, initialValues)}>
       <h2>create new</h2>
       <div>
         title

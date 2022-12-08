@@ -1,10 +1,11 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Blog from './components/Blog';
 import CreateBlog from './components/CreateBlog';
 import LoginForm from './components/LoginForm';
 import Notification from './components/Notification';
-import { getAll } from './services/blogs';
+import Togglable from './components/Togglable';
+import { create, getAll } from './services/blogs';
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -12,9 +13,32 @@ const App = () => {
   const [notification, setNotification] = useState('');
   const [isError, setIsError] = useState(false);
 
+  const blogFormRef = useRef();
+
+  async function handleCreate(e, values, setValues, initialValues) {
+    e.preventDefault();
+    try {
+      blogFormRef.current.toggleVisibility();
+      const newBlog = await create(values);
+      setBlogs(() => blogs.concat(newBlog));
+      setNotification(`a new blog by ${user.name} is added`);
+      setTimeout(() => {
+        setNotification('');
+      }, 3000);
+      setValues(initialValues);
+    } catch (err) {
+      setNotification(err.response.data.error);
+      setIsError(true);
+      setTimeout(() => {
+        setNotification('');
+        setIsError(false);
+      }, 3000);
+    }
+  }
+
   useEffect(() => {
     getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+  }, [blogs.length]);
 
   return (
     <div>
@@ -22,23 +46,21 @@ const App = () => {
         <Notification message={notification} isError={isError} />
       )}
       <LoginForm
-        sendNotif={setNotification}
-        markError={setIsError}
+        setNotification={setNotification}
+        setIsError={setIsError}
         user={user}
         setUser={setUser}
       >
-        <CreateBlog
-          sendNotif={setNotification}
-          markError={setIsError}
-          blogs={blogs}
-          currUser={user}
-          setBlogs={setBlogs}
-        />
+        <Togglable btnLabel="new note" ref={blogFormRef}>
+          <CreateBlog addBlog={handleCreate} />
+        </Togglable>
       </LoginForm>
       <h2>blogs</h2>
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
-      ))}
+      {blogs
+        .sort((a, b) => b.likes - a.likes)
+        .map((blog) => (
+          <Blog key={blog.id} blog={blog} setBlogs={setBlogs} blogs={blogs} />
+        ))}
     </div>
   );
 };

@@ -2,7 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { login } from '../services/login';
 import { setToken } from '../services/blogs';
 
-const LoginForm = ({ children, sendNotif, markError, user, setUser }) => {
+const LoginForm = ({
+  children,
+  setNotification,
+  setIsError,
+  user,
+  setUser,
+}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -28,11 +34,11 @@ const LoginForm = ({ children, sendNotif, markError, user, setUser }) => {
       setPassword('');
     } catch (e) {
       // console.log(e.response.data.error);
-      sendNotif(e.response.data.error);
-      markError(true);
+      setNotification(e.response.data.error);
+      setIsError(true);
       setTimeout(() => {
-        sendNotif('');
-        markError(false);
+        setNotification('');
+        setIsError(false);
       }, 3000);
     }
   }
