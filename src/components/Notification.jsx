@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const notificationStyles = {
   backgroundColor: 'whitesmoke',
@@ -6,7 +6,7 @@ const notificationStyles = {
   fontFamily: 'monospace',
   width: '50vw',
   marginBottom: '2%',
-};
+}
 
 const Notification = ({ message, isError }) => {
   return isError ? (
@@ -17,7 +17,7 @@ const Notification = ({ message, isError }) => {
     <div style={{ ...notificationStyles, border: '5px dashed green' }}>
       <h2 style={{ margin: 0 }}>{message}</h2>
     </div>
-  );
-};
+  )
+}
 
-export default Notification;
+export default Notification

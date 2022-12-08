@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 const initialValues = {
   title: '',
   author: '',
   url: '',
-};
+}
 
 const CreateBlog = ({ addBlog }) => {
-  const [values, setValues] = useState(initialValues);
+  const [values, setValues] = useState(initialValues)
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
 
     setValues({
       ...values,
       [name]: value,
-    });
-  };
+    })
+  }
 
   return (
     <form onSubmit={(e) => addBlog(e, values, setValues, initialValues)}>
@@ -50,7 +50,7 @@ const CreateBlog = ({ addBlog }) => {
       </div>
       <button type="submit">create</button>
     </form>
-  );
-};
+  )
+}
 
-export default CreateBlog;
+export default CreateBlog

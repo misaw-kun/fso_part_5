@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { login } from '../services/login';
-import { setToken } from '../services/blogs';
+import React, { useEffect, useState } from 'react'
+import { login } from '../services/login'
+import { setToken } from '../services/blogs'
+import PropTypes from 'prop-types'
 
 const LoginForm = ({
   children,
@@ -9,37 +10,37 @@ const LoginForm = ({
   user,
   setUser,
 }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedinUser');
+    const loggedUserJSON = window.localStorage.getItem('loggedinUser')
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      setToken(user.token);
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      setToken(user.token)
     }
-  }, []);
+  }, [])
 
   async function handleLogin(e) {
-    e.preventDefault();
+    e.preventDefault()
     try {
       const loginUser = await login({
         username,
         password,
-      });
-      window.localStorage.setItem('loggedinUser', JSON.stringify(loginUser));
-      setUser(loginUser);
-      setUsername('');
-      setPassword('');
+      })
+      window.localStorage.setItem('loggedinUser', JSON.stringify(loginUser))
+      setUser(loginUser)
+      setUsername('')
+      setPassword('')
     } catch (e) {
       // console.log(e.response.data.error);
-      setNotification(e.response.data.error);
-      setIsError(true);
+      setNotification(e.response.data.error)
+      setIsError(true)
       setTimeout(() => {
-        setNotification('');
-        setIsError(false);
-      }, 3000);
+        setNotification('')
+        setIsError(false)
+      }, 3000)
     }
   }
 
@@ -67,23 +68,30 @@ const LoginForm = ({
         </div>
         <button type="submit">login</button>
       </form>
-    );
+    )
   } else {
     return (
       <>
         <p>logged in as {user.name}</p>
         <button
           onClick={() => {
-            window.localStorage.removeItem('loggedinUser');
-            setUser(null);
+            window.localStorage.removeItem('loggedinUser')
+            setUser(null)
           }}
         >
           logout
         </button>
         {children}
       </>
-    );
+    )
   }
-};
+}
 
-export default LoginForm;
+LoginForm.propTypes = {
+  setNotification: PropTypes.func.isRequired,
+  setIsError: PropTypes.func.isRequired,
+  user: PropTypes.object,
+  setUser: PropTypes.func.isRequired,
+}
+
+export default LoginForm

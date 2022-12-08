@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { remove, updateLikes } from '../services/blogs';
+import React, { useState } from 'react'
+import { remove, updateLikes } from '../services/blogs'
+import PropTypes from 'prop-types'
 
 /**
  * TODO: fix client side like handling (DONE)
  */
 
-const Blog = ({ blog, setBlogs, blogs }) => {
-  const loggedinUser = JSON.parse(localStorage.getItem('loggedinUser'));
-
-  const [visible, setVisible] = useState(false);
+const Blog = ({ user, blog, setBlogs, blogs }) => {
+  // const loggedinUser = JSON.parse(localStorage.getItem('loggedinUser'));
+  const [visible, setVisible] = useState(false)
   const [likes, setLikes] = useState({
-    liked: blog.likes?.includes(loggedinUser?.id) || false,
+    liked: blog.likes?.includes(user?.id) || false,
     count: blog.likes?.length || 0,
-  });
+  })
 
   const blogStyle = {
     padding: 5,
@@ -21,24 +21,24 @@ const Blog = ({ blog, setBlogs, blogs }) => {
     borderWidth: 1,
     marginBottom: 5,
     width: '50vw',
-  };
+  }
 
   async function updateLikesCount() {
     setLikes((prevState) => ({
       liked: !prevState.liked,
       count: prevState.liked ? prevState.count - 1 : prevState.count + 1,
-    }));
+    }))
     await updateLikes(blog.id, {
-      likes: loggedinUser.id,
-    });
+      likes: user.id,
+    })
   }
 
   async function handleDelete() {
     if (confirm(`delete ${blog.title} ?`)) {
-      setBlogs(() => blogs.filter((item) => item.id !== blog.id));
-      await remove(blog.id);
+      setBlogs(() => blogs.filter((item) => item.id !== blog.id))
+      await remove(blog.id)
     } else {
-      return;
+      return
     }
   }
 
@@ -58,7 +58,7 @@ const Blog = ({ blog, setBlogs, blogs }) => {
         </p>
         <span style={{ display: 'flex', gap: '1rem' }}>
           likes : {likes.count}
-          {loggedinUser && (
+          {user && (
             <button onClick={updateLikesCount}>
               {likes.liked ? 'un-like' : 'like'}
             </button>
@@ -66,11 +66,18 @@ const Blog = ({ blog, setBlogs, blogs }) => {
         </span>
         <p>user : {blog?.user?.name}</p>
       </div>
-      {loggedinUser?.username === blog.user.username && (
+      {user?.username === blog.user.username && (
         <button onClick={handleDelete}>remove</button>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Blog;
+Blog.propTypes = {
+  user: PropTypes.object.isRequired,
+  blog: PropTypes.object.isRequired,
+  setBlogs: PropTypes.func.isRequired,
+  blogs: PropTypes.array.isRequired,
+}
+
+export default Blog
