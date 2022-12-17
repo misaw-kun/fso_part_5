@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const notificationStyles = {
   backgroundColor: 'whitesmoke',
@@ -10,14 +11,19 @@ const notificationStyles = {
 
 const Notification = ({ message, isError }) => {
   return isError ? (
-    <div style={{ ...notificationStyles }}>
+    <div className='notif' style={{ ...notificationStyles }}>
       <h2 style={{ margin: 0 }}>{message}</h2>
     </div>
   ) : (
-    <div style={{ ...notificationStyles, border: '5px dashed green' }}>
+    <div className='notif' style={{ ...notificationStyles, border: '5px dashed green' }}>
       <h2 style={{ margin: 0 }}>{message}</h2>
     </div>
   )
+}
+
+Notification.propTypes = {
+  message: PropTypes.string.isRequired,
+  isError: PropTypes.bool
 }
 
 export default Notification

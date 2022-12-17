@@ -31,6 +31,7 @@ const LoginForm = ({
       })
       window.localStorage.setItem('loggedinUser', JSON.stringify(loginUser))
       setUser(loginUser)
+      setToken(loginUser.token)
       setUsername('')
       setPassword('')
     } catch (e) {
@@ -46,7 +47,7 @@ const LoginForm = ({
 
   if (user === null) {
     return (
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleLogin} id='loginForm'>
         <h2>log in to application</h2>
         <div>
           username

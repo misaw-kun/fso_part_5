@@ -57,7 +57,7 @@ const App = () => {
       </LoginForm>
       <h2>blogs</h2>
       {blogs
-        .sort((a, b) => b.likes - a.likes)
+        .sort((a, b) => b.likes.length - a.likes.length)
         .map((blog) => (
           <Blog
             key={blog.id}
@@ -66,7 +66,8 @@ const App = () => {
             setBlogs={setBlogs}
             blogs={blogs}
           />
-        ))}
+        ))
+      }
     </div>
   )
 }

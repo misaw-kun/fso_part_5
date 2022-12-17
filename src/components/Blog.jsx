@@ -43,9 +43,9 @@ const Blog = ({ user, blog, setBlogs, blogs }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div className='blog' style={blogStyle}>
       <span style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <span>
+        <span id='list-view'>
           {blog.title} <em>by</em> {blog.author}
         </span>
         <button onClick={() => setVisible(!visible)}>
@@ -57,7 +57,9 @@ const Blog = ({ user, blog, setBlogs, blogs }) => {
           <a href={blog.url}>{blog.url}</a>
         </p>
         <span style={{ display: 'flex', gap: '1rem' }}>
-          likes : {likes.count}
+          <span id='likesCount'>
+            likes : {likes.count}
+          </span>
           {user && (
             <button onClick={updateLikesCount}>
               {likes.liked ? 'un-like' : 'like'}
@@ -66,7 +68,7 @@ const Blog = ({ user, blog, setBlogs, blogs }) => {
         </span>
         <p>user : {blog?.user?.name}</p>
       </div>
-      {user?.username === blog.user.username && (
+      {user && user?.username === blog.user.username && (
         <button onClick={handleDelete}>remove</button>
       )}
     </div>
@@ -74,10 +76,10 @@ const Blog = ({ user, blog, setBlogs, blogs }) => {
 }
 
 Blog.propTypes = {
-  user: PropTypes.object.isRequired,
+  user: PropTypes.object,
   blog: PropTypes.object.isRequired,
   setBlogs: PropTypes.func.isRequired,
-  blogs: PropTypes.array.isRequired,
+  blogs: PropTypes.array,
 }
 
 export default Blog

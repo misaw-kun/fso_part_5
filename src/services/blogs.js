@@ -18,7 +18,6 @@ const create = async newBlog => {
       Authorization: TOKEN
     }
   }
-  // console.log(config);
   const response = await axios.post(baseUrl, newBlog, config)
   return response.data
 }
@@ -29,6 +28,7 @@ const updateLikes = async (id, userId) => {
       Authorization: TOKEN
     }
   }
+  // console.log(config)
   const response = await axios.put(`${baseUrl}/${id}/likes`, userId, config)
   return response.data
 }

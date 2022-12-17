@@ -19,37 +19,42 @@ const CreateBlog = ({ addBlog }) => {
   }
 
   return (
-    <form onSubmit={(e) => addBlog(e, values, setValues, initialValues)}>
-      <h2>create new</h2>
-      <div>
+    <div className='formDiv'>
+      <form onSubmit={(e) => addBlog(e, values, setValues, initialValues)}>
+        <h2>create new</h2>
+        <div>
         title
-        <input
-          type="text"
-          name="title"
-          value={values.title}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div>
+          <input
+            placeholder='title'
+            type="text"
+            name="title"
+            value={values.title}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
         author
-        <input
-          type="text"
-          name="author"
-          value={values.author}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div>
+          <input
+            placeholder='author'
+            type="text"
+            name="author"
+            value={values.author}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
         url
-        <input
-          type="text"
-          name="url"
-          value={values.url}
-          onChange={handleInputChange}
-        />
-      </div>
-      <button type="submit">create</button>
-    </form>
+          <input
+            placeholder='url'
+            type="text"
+            name="url"
+            value={values.url}
+            onChange={handleInputChange}
+          />
+        </div>
+        <button type="submit">create</button>
+      </form>
+    </div>
   )
 }
 
